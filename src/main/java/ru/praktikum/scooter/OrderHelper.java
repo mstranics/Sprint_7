@@ -1,13 +1,21 @@
 package ru.praktikum.scooter;
 
-import java.util.Random;
+public class OrderHelper {
+    public static Order addOrder() {
+        Order order = new Order();
+        order.setComment("some comment");
+        order.setRentTime(5);
+        order.setPhone("some phone");
+        order.setDeliveryDate("2024-10-10");
+        order.setMetroStation("some station");
+        order.setAddress("some address");
+        order.setLastName("last name");
+        order.setFirstName("first Name");
+        return order;
+    }
 
-public class CourierHelper {
-public static Courier addCourier (){
-    Courier courier =new Courier();
-    courier.setFirstName("John"+new Random().nextInt(1000));
-    courier.setPassword("pass" + new Random().nextInt(1000));
-    courier.setLogin("Johnnie" + new Random().nextInt(1000));
-    return courier;
-}
+    public static Order addOrderWithTrack() {
+        return new Order();
+    }
+
 }

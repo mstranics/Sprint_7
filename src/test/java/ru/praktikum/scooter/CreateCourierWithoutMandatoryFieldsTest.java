@@ -2,7 +2,6 @@ package ru.praktikum.scooter;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +9,9 @@ import org.junit.runners.Parameterized;
 
 import static org.junit.Assert.*;
 @RunWith(Parameterized.class)
-public class CreateCourierWithoutFieldsTest {
+public class CreateCourierWithoutMandatoryFieldsTest {
 
-    public CreateCourierWithoutFieldsTest(String login, String password, String firstName,int expectedCode,String expectedText) {
+    public CreateCourierWithoutMandatoryFieldsTest(String login, String password, String firstName, int expectedCode, String expectedText) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -28,13 +27,12 @@ public class CreateCourierWithoutFieldsTest {
 
     @Parameterized.Parameters
     public static Object[][] getCourierData() {
-        return new Object[][] {
-                { "", "midepass", "midename", 400 , "Недостаточно данных для создания учетной записи"},
-                { null, "midepass", "midename", 400 , "Недостаточно данных для создания учетной записи"},
-                { "midelog", "", "midename", 400 , "Недостаточно данных для создания учетной записи"},
-                { "midelog", null, "midename", 400 , "Недостаточно данных для создания учетной записи"},
-                { "midelog4", "midepass", "", 201 , "ok"},
-                { "midelog5", "midepass", null, 201 , "ok"},
+        return new Object[][]{
+                {"", "midepass", "midename", 400, "Недостаточно данных для создания учетной записи"},
+                {null, "midepass", "midename", 400, "Недостаточно данных для создания учетной записи"},
+                {"midelog", "", "midename", 400, "Недостаточно данных для создания учетной записи"},
+                {"midelog", null, "midename", 400, "Недостаточно данных для создания учетной записи"},
+
         };
     }
 
@@ -50,19 +48,18 @@ public class CreateCourierWithoutFieldsTest {
 
 
     @Test
-    @DisplayName("Check creation of courier without fields")
-    public void createCourierRequiredFields() {
+    @DisplayName("Courier without mandatory fields can't be created")
+    public void createCourierNoRequiredFields() {
         courier.setLogin(login);
         courier.setPassword(password);
         courier.setFirstName(firstName);
         ValidatableResponse createResponse = courierClient.create(courier);
-        assertEquals(expectedCode,createResponse.extract().statusCode());
-        if (createResponse.extract().statusCode()==400) {
-        assertEquals(expectedText,createResponse.extract().path("message"));
-        } else if (createResponse.extract().statusCode()==201) {
-            assertTrue(createResponse.extract().path("ok"));
+        assertEquals("не совпадает код ответа",expectedCode,createResponse.extract().statusCode());
+
+        assertEquals("текст ошибки не совападает",expectedText,createResponse.extract().path("message"));
+
         }
-        courierClient.delete(courierId);
+
     }
 
-}
+
