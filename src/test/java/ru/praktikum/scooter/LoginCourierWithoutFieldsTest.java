@@ -43,7 +43,11 @@ public class LoginCourierWithoutFieldsTest {
 
         courierClient = new CourierClient();
         courier=CourierHelper.addCourier();
-
+        courierClient.create(courier);
+        ValidatableResponse loginResponse = courierClient.login(CourierCreds.from(courier));
+        courierId = loginResponse.extract().path("id");
+        courier.setLogin(login);
+        courier.setPassword(password);
     }
     @After
     public  void cleanUp () {
@@ -53,9 +57,7 @@ public class LoginCourierWithoutFieldsTest {
     @Test
     @DisplayName("Courier's can't login without login or password")
     public  void  courierLoginNegative () {
-        courierClient.create(courier);
-        courier.setLogin(login);
-        courier.setPassword(password);
+
         ValidatableResponse loginResponse= courierClient.login(CourierCreds.from(courier));
         assertEquals("не совпадает код ответа",expectedCode,loginResponse.extract().statusCode());
         assertEquals("текст ошибки не совападает",expectedText, loginResponse.extract().path("message"));
