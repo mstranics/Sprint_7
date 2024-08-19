@@ -33,9 +33,7 @@ public class Order {
         this.track = track;
     }
 
-    public Order(int track) {
-        this.track = track;
-    }
+
 
     int track;
 

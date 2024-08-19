@@ -38,7 +38,6 @@ public class CreateCourierWithoutMandatoryFieldsTest {
 
     private CourierClient courierClient;
     private Courier courier;
-    private  int courierId;
     @Before
     public void setUp(){
 
@@ -55,7 +54,6 @@ public class CreateCourierWithoutMandatoryFieldsTest {
         courier.setFirstName(firstName);
         ValidatableResponse createResponse = courierClient.create(courier);
         assertEquals("не совпадает код ответа",expectedCode,createResponse.extract().statusCode());
-
         assertEquals("текст ошибки не совападает",expectedText,createResponse.extract().path("message"));
 
         }

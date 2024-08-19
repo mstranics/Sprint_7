@@ -14,8 +14,4 @@ public class OrderHelper {
         return order;
     }
 
-    public static Order addOrderWithTrack() {
-        return new Order();
-    }
-
 }
